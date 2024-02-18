@@ -41,10 +41,19 @@ class SampleHandler(View):
     def post(self, request, *args, **kwargs):
         print("SampleHandler POST")
         try:
-           print("post")
-           context = {
-            "proc": "post"
-           }
+           id = request.POST.get("id")
+           pw = request.POST.get("pw")
+
+           if id == "nursing_xr" and pw == "1234":
+               context = {
+                   "proc": "success"
+               }
+               return JsonResponse(context)
+           else:
+               context = {
+                   "proc": "fail"
+               }
+               return JsonResponse(context, status=404)
         except Exception as e:
             context = {
                 "proc": "fail",
@@ -53,7 +62,6 @@ class SampleHandler(View):
             trace_back = traceback.format_exc()
             message = str(e) + "\n" + str(trace_back)
             print("============== SampleHandler Fail %s", message)
-        return JsonResponse(context)
 
     def put(self, request, *args, **kwargs):
         print("SampleHandler PUT")
